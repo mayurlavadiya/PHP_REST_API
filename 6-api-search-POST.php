@@ -1,7 +1,7 @@
 <?php
 include "config.php";
 
-// SEARCH DATA USING POST METHOD
+// SEARCH DATA USING POST METHOD to search data in POSTMAN Application --->
 
 header('content-type: application/json');
 header('Access-control-Allow-origin: *'); // easily access krva mate phn n web ma
