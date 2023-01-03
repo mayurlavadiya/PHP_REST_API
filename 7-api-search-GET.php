@@ -4,12 +4,12 @@ include "config.php";
 // SEARCH DATA USING GET METHOD
 
 /*
-    in POSTMAN Application for search data using GET 
+    in POSTMAN Application for search data using GET method and here step i showing for performing task --->
     
-    1. Select Get method
-    2. Select URL : http://localhost:8080/task/Task_Running/PHP_REST_API/7-api-search-GET.php
-    3. And Add search data in URL like ---> http://localhost:8080/task/Task_Running/PHP_REST_API/7-api-search-GET.php?search=cha
-    4. Send --- Output generated
+        1. Select Get method
+        2. Select URL : http://localhost:8080/task/Task_Running/PHP_REST_API/7-api-search-GET.php
+        3. And Add search data in URL like ---> http://localhost:8080/task/Task_Running/PHP_REST_API/7-api-search-GET.php?search=cha
+        4. Send --- Output generated...
 
 */
 
