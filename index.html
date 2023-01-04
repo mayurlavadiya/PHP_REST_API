@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PHP REST API CRUD</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+  
+  <table id="main" border="0" cellspacing="0">
+    <tr>
+      <td id="header">
+        <h1>PHP REST API CRUD</h1>
+
+        <div id="search-bar">
+          <label>Search :</label>
+          <input type="text" id="search" autocomplete="off">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td id="table-form">
+        <form id="addForm" class="mt-2">
+          First Name : <input type="text" class="form-group col-md-6" name="firstname" id="fname"></br></br>
+          Last Name : <input type="text" class="form-group col-md-6" name="lastname" id="lname"></br></br>
+          Age : <input type="text" class="form-group col-md-4" name="age" id="age" maxlength="2">
+          City : <input type="text" class="form-group col-md-4" name="city" id="city"></br></br>
+          <input type="submit" id="save-button" value="Save">
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td id="table-data">
+        <table width="100%" cellpadding="10px" >
+          <tr>
+            <th width="40px">Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th width="50px">Age</th>
+            <th width="80px">City</th>
+            <th width="30px">Edit</th>
+            <th width="30px">Delete</th>
+          </tr>
+          <tbody id="load-table"></tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  
+  <div id="error-message" class="messages"></div>
+  <div id="success-message" class="messages"></div>
+
+  <!-- Popup Modal Box for Update the Records -->
+  <div id="modal">
+    <div id="modal-form">
+      <h2>Edit Form</h2>
+      <form action="" id="edit-form">
+      <table cellpadding="10px" width="100%">
+        <tr>
+          <td width="90px">First Name</td>
+          <td><input type="text" class="form-group col-md-4" name="fname" id="edit-firstname">
+              <input type="text" class="form-group col-md-4" name="id" id="edit-id" hidden="">
+          </td>
+        </tr>
+        <tr>
+          <td>Last Name</td>
+          <td><input type="text" class="form-group col-md-4" name="lname" id="edit-lastname"></td>
+        </tr>
+        <tr>
+          <td>Age</td>
+          <td><input type="text" class="form-group col-md-4" name="age" id="edit-age" maxlength="2"></td>
+        </tr>
+        <tr>
+          <td>City</td>
+          <td><input type="text" class="form-group col-md-4" name="city" id="edit-city"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="button" id="edit-submit" value="Update"></td>
+        </tr>
+      </table>
+      </form>
+      <div id="close-btn">X</div>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript">
+
+    $(document).ready(function(){
+      
+      // Fetch All Record
+      function loadTable(){
+        $.ajax({
+          url : 'http://localhost:8080/task/Task_Running/PHP_REST_API/1-api-fetch-all.php',
+          type : "GET",
+          success : function(data){
+            if(data.status == false){
+              $("#load-tabe").append("<tr><td colspan='6'><h2>"+ data.message +"</h2></td></tr>");
+            }else{
+              $.each(data, function(key,value){
+                $("#load-table").append("<tr>" 
+                                        + "<td>"+ value.id +"</td>" 
+                                        + "<td>"+ value.firstname +"</td>" 
+                                        + "<td>"+ value.lastname +"</td>" 
+                                        + "<td>"+ value.age +"</td>" 
+                                        + "<td>"+ value.city +"</td>" 
+                                        + "<td><button class='edit-btn' data-eid='"+ value.id +"'>EDIT</button></td>"
+                                        + "<td><button class='delete-btn' data-id='"+ value.id +"'>DELETE</button></td>"
+                                        + "</tr>");
+              });
+            }
+          }
+        });
+      }
+      loadTable();   
+
+      // Fetch Single record
+      $(document).on("click",".edit-btn",function(){
+        $("#modal").show();
+      });
+
+
+
+    
+    });
+    
+  </script>
+
+</body>
+</html>
