@@ -63,6 +63,7 @@
         <tr>
           <td width="90px">First Name</td>
           <td><input type="text" class="form-group col-md-4" name="fname" id="edit-firstname">
+            
               <input type="text" class="form-group col-md-4" name="id" id="edit-id" hidden="">
           </td>
         </tr>
@@ -121,8 +122,26 @@
       // Fetch Single record
       $(document).on("click",".edit-btn",function(){
         $("#modal").show();
+
+        var studentID = $(this).data("eid");
+        var obj = {sid : studentID};
+        var myJSON = JSON.stringify(obj);
+
+        $.ajax({
+          type: "method",
+          url: "url",
+          data: "data",
+          dataType: "dataType",
+          success: function (response) {
+            
+          }
+        });
       });
 
+      //hide modal box
+      $("#close-btn").on("click",function(){
+        $("#modal").hide();
+      });
 
 
     
