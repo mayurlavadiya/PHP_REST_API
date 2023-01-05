@@ -11,8 +11,11 @@ $data = json_decode(file_get_contents("php://input"), true); // json decode arra
 $student_id = $data['id'];
 $firstname = $data['firstname'];
 $lastname = $data['lastname'];
+$age = $data['age'];
+$city = $data['city'];
 
-$sql = "UPDATE stud_detail SET firstname = '$firstname', lastname = '$lastname' WHERE id = '$student_id'";
+
+$sql = "UPDATE stud_detail SET firstname = '$firstname', lastname = '$lastname', age = '$age',city = '$city' WHERE id = '$student_id'";
 
 if(mysqli_query($conn, $sql))
 {

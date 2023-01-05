@@ -10,7 +10,7 @@
 </head>
 <body>
   
-  <table id="main" border="0" cellspacing="0">
+  <table id="main" border="0" cellspacing="0" cellpadding="25%">
     <tr>
       <td id="header">
         <h1>PHP REST API CRUD</h1>
@@ -95,9 +95,10 @@
       
       // Fetch All Record
       function loadTable(){
+        $("#load-table").html(""); // empty table krva mate
         $.ajax({
           url : 'http://localhost:8080/task/Task_Running/PHP_REST_API/1-api-fetch-all.php',
-          type : "GET",
+          type : "GET", //only data fetch krva chhe so GET
           success : function(data){
             if(data.status == false){
               $("#load-tabe").append("<tr><td colspan='6'><h2>"+ data.message +"</h2></td></tr>");
@@ -118,29 +119,122 @@
         });
       }
       loadTable();   
+    // Show Success OR Error Message
+      function message(message, status){
+        if(status == true){
+          $("#success-message").html(message).slideDown();
+          $("#error-message").slideUp();
+          setTimeout(function(){
+            $("#success-message").slideUp();
+          },4000); // 4 sec pchi automatic gayab
+        }else if(status == false)
+        {
+          $("#error-message").html(message).slideDown();
+          $("#success-message").slideUp();
+          setTimeout(function(){
+            $("#error-message").slideUp();
+          },4000); // 4 sec pchi automatic gayab
+        }
+      }
 
-      // Fetch Single record
+    // Function For Formdata to Json
+      function jsonData(targetForm){
+        var arr = $(targetForm).serializeArray(); // form ni jetli field hoi ene array format ma nakhva mate
+       
+        var obj = {}; // empty object
+        for(var a=0; a<arr.length; a++)
+        {
+          if(arr[a].value == ""){
+            return false; // value nay male to return karse false
+          
+          }
+
+          obj[arr[a].name]=arr[a].value;  // array ne object ma 
+        }
+        
+        var json_string = JSON.stringify(obj); // object data ne json format ma trf krva mate
+        return json_string;
+      }
+
+    // Insert New Record - data insert
+      $("#save-button").on("click",function(e){
+        e.preventDefault();
+
+        var jsonObj = jsonData("#addForm");
+        // console.log(jsonObj);
+
+        if(jsonObj == false){
+           message("All fields are required...!",false); // validation upr na false part mathi call thase kadach value nho hoi to 
+        }else
+        {
+          $.ajax({
+            url : 'http://localhost:8080/task/Task_Running/PHP_REST_API/3-api-insert.php',
+            type : "POST", 
+            data : jsonObj,
+            success : function(data){
+              message(data.message, data.status);
+              if(data.status == true)
+              {
+                loadTable(); 
+                $("#addForm").trigger("reset");
+              }
+            }
+          });
+        }
+      });
+
+    // Fetch Single record
       $(document).on("click",".edit-btn",function(){
         $("#modal").show();
 
-        var studentID = $(this).data("eid");
-        var obj = {sid : studentID};
-        var myJSON = JSON.stringify(obj);
+        var studentID = $(this).data("eid"); 
+        var obj = {id : studentID}; // convert studentID in object
+        var myJSON = JSON.stringify(obj); // convert object in JSON format
 
         $.ajax({
-          type: "method",
-          url: "url",
-          data: "data",
-          dataType: "dataType",
-          success: function (response) {
-            
+          url : 'http://localhost:8080/task/Task_Running/PHP_REST_API/2-api-fetch-single.php',
+          type : "POST",
+          data : myJSON,
+          success : function(data){ 
+            $("#edit-id").val(data[0].id); // array ma made chhe value etle data[0] lidhu 
+            $("#edit-firstname").val(data[0].firstname);
+            $("#edit-lastname").val(data[0].lastname);
+            $("#edit-age").val(data[0].age);
+            $("#edit-city").val(data[0].city);
           }
         });
       });
 
-      //hide modal box
+    //hide modal box
       $("#close-btn").on("click",function(){
         $("#modal").hide();
+      });
+
+    // Update Record
+    $("#edit-submit").on("click",function(e){
+        e.preventDefault();
+
+        var jsonObj = jsonData("#edit-form");
+        // console.log(jsonObj);
+
+        if(jsonObj == false){
+           message("All fields are required...!",false); // validation upr na false part mathi call thase kadach value nho hoi to 
+        }else
+        {
+          $.ajax({
+            url : 'http://localhost:8080/task/Task_Running/PHP_REST_API/4-api-update.php',
+            type : "POST", 
+            data : jsonObj,
+            success : function(data){
+              message(data.message, data.status);
+              if(data.status == true)
+              {
+                loadTable(); 
+                $("#addForm").trigger("reset");
+              }
+            }
+          });
+        }
       });
 
 

@@ -11,8 +11,10 @@ $data = json_decode(file_get_contents("php://input"), true); // json decode arra
 
 $firstname = $data['firstname'];
 $lastname = $data['lastname'];
+$age = $data['age'];
+$city = $data['city'];
 
-$sql = "INSERT INTO stud_detail(id,firstname,lastname) VALUES ('','$firstname','$lastname')";
+$sql = "INSERT INTO stud_detail(id,firstname,lastname,age,city) VALUES ('','$firstname','$lastname','$age','$city')";
 
 if(mysqli_query($conn, $sql))
 {
