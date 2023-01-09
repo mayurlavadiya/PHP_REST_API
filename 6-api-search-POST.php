@@ -10,7 +10,8 @@ $data = json_decode(file_get_contents("php://input"), true); // json decode arra
 
 $searchValue = $data['search'];
 
-$sql = "SELECT * FROM stud_detail WHERE firstname LIKE '%$searchValue%'";
+$sql = "SELECT * FROM stud_detail WHERE firstname LIKE '%$searchValue%' OR lastname LIKE '%$searchValue%' OR
+age LIKE '%$searchValue%' OR city LIKE '%$searchValue%'";
 
 $result = mysqli_query($conn, $sql) or die("SQL Query failed..");
 

@@ -19,7 +19,8 @@ header('Access-control-Allow-origin: *'); // easily access krva mate phn n web m
 // fetch data from URL using GET method
 $searchValue = isset($_GET['search']) ? $_GET['search'] : die();
 
-$sql = "SELECT * FROM stud_detail WHERE firstname LIKE '%$searchValue%' OR lastname LIKE '%$searchValue%'";
+$sql = "SELECT * FROM stud_detail WHERE firstname LIKE '%$searchValue%' OR lastname LIKE '%$searchValue%' OR
+age LIKE '%$searchValue%' OR city LIKE '%$searchValue%'";
 
 $result = mysqli_query($conn, $sql) or die("SQL Query failed..");
 

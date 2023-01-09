@@ -8,7 +8,7 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-type,
 
 $data = json_decode(file_get_contents("php://input"), true); // json decode array ma convert krva mate
 
-$student_id = $data['id'];
+$student_id = $data['id']; // data json formatma chhe
 
 $sql = "DELETE FROM stud_detail WHERE id = $student_id";
 

@@ -62,14 +62,14 @@
       <table cellpadding="10px" width="100%">
         <tr>
           <td width="90px">First Name</td>
-          <td><input type="text" class="form-group col-md-4" name="fname" id="edit-firstname">
+          <td><input type="text" class="form-group col-md-4" name="firstname" id="edit-firstname">
             
               <input type="text" class="form-group col-md-4" name="id" id="edit-id" hidden="">
           </td>
         </tr>
         <tr>
           <td>Last Name</td>
-          <td><input type="text" class="form-group col-md-4" name="lname" id="edit-lastname"></td>
+          <td><input type="text" class="form-group col-md-4" name="lastname" id="edit-lastname"></td>
         </tr>
         <tr>
           <td>Age</td>
@@ -183,6 +183,30 @@
         }
       });
 
+    // Delete record
+      $(document).on("click",".delete-btn",function(){
+         if(confirm("Do you really want to delete this data ?")){
+            var studentID = $(this).data("id"); 
+            var obj = {id : studentID}; // convert studentID in object
+            var myJSON = JSON.stringify(obj); // convert object in JSON format 
+            var element = this; // variable create for element..
+
+            $.ajax({
+            url : 'http://localhost:8080/task/Task_Running/PHP_REST_API/5-api-delete.php',
+            type : "POST",
+            data : myJSON,
+            success : function(data){ 
+              message(data.message, data.status);
+              if(data.status == true)
+              {
+                $(element).closest("tr").fadeOut(); 
+              }
+            }
+          });
+         }
+
+      });
+
     // Fetch Single record
       $(document).on("click",".edit-btn",function(){
         $("#modal").show();
@@ -228,16 +252,43 @@
             success : function(data){
               message(data.message, data.status);
               if(data.status == true)
+              $("#modal").hide();
               {
                 loadTable(); 
-                $("#addForm").trigger("reset");
+               
               }
             }
           });
         }
       });
 
+      // Live search
+      $('#search').on("keyup", function() {
+          var searchitem = $(this).val();
+          $("#load-table").html("");
 
+          $.ajax({
+              url: 'http://localhost:8080/task/Task_Running/PHP_REST_API/7-api-search-GET.php?search=' + searchitem,
+              type: "GET",
+              success : function(data){
+            if(data.status == false){
+              $("#load-table").append("<tr><td colspan='6'><h2>"+ data.message +"</h2></td></tr>");
+            }else{
+              $.each(data, function(key,value){
+                $("#load-table").append("<tr>" 
+                                        + "<td>"+ value.id +"</td>" 
+                                        + "<td>"+ value.firstname +"</td>" 
+                                        + "<td>"+ value.lastname +"</td>" 
+                                        + "<td>"+ value.age +"</td>" 
+                                        + "<td>"+ value.city +"</td>" 
+                                        + "<td><button class='edit-btn' data-eid='"+ value.id +"'>EDIT</button></td>"
+                                        + "<td><button class='delete-btn' data-id='"+ value.id +"'>DELETE</button></td>"
+                                        + "</tr>");
+              });
+            }
+          }
+          });
+      });
     
     });
     

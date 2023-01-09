@@ -15,7 +15,7 @@ $age = $data['age'];
 $city = $data['city'];
 
 
-$sql = "UPDATE stud_detail SET firstname = '$firstname', lastname = '$lastname', age = '$age',city = '$city' WHERE id = '$student_id'";
+$sql = "UPDATE stud_detail SET firstname = '$firstname', lastname = '$lastname', age = '$age', city = '$city' WHERE id = '$student_id'";
 
 if(mysqli_query($conn, $sql))
 {
